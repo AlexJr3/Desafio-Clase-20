@@ -5,7 +5,7 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import mongoose from "mongoose";
 import viewsRouter from "./routes/views.router.js";
-import registerRouter from "./routes/register.router.js";
+import authRouter from "./routes/auth.router.js";
 
 const app = express();
 const port = 8080;
@@ -27,14 +27,14 @@ app.use(
   })
 );
 
-//Routes
-app.use("/", viewsRouter);
-app.use("/singup", registerRouter);
-
 //handlebars
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/views");
+
+//Routes
+app.use("/", viewsRouter);
+app.use("/api/session", authRouter);
 
 //Connection Mongoose to MongoDB
 mongoose.connect(urlDB);
